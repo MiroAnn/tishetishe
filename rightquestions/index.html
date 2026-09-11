@@ -53,8 +53,8 @@ footer{padding:100px 4vw 34px;background:var(--ink);color:var(--paper);text-alig
 /* Right Questions */
 .rightquestions { background: #F0EBE2; color: #161719; overflow: hidden; }
 .rightquestions * { box-sizing: border-box; }
-.rq-nav { min-height: 104px; padding: 18px clamp(24px, 4vw, 76px); border-bottom: 1px solid #161719; display: flex; align-items: center; gap: 40px; justify-content: space-between; background: #F0EBE2; position: relative; z-index: 5; }
-.rq-nav .brand img { width: 180px; display: block; }
+.rq-nav { min-height: 78px; padding: 10px clamp(24px, 4vw, 76px); border-bottom: 1px solid #161719; display: flex; align-items: center; gap: 40px; justify-content: space-between; background: #F0EBE2; position: sticky; top: 0; z-index: 50; }
+.rq-nav .brand img { width: 155px; display: block; }
 .rq-nav nav { display: flex; align-items: center; gap: clamp(18px, 2.4vw, 46px); }
 .rq-nav nav a { color: #161719; text-decoration: none; font-size: 15px; }
 .rq-nav nav a:hover { text-decoration: underline; text-underline-offset: 5px; }
@@ -162,8 +162,8 @@ footer{padding:100px 4vw 34px;background:var(--ink);color:var(--paper);text-alig
 }
 
 @media (max-width: 640px) {
-  .rq-nav { min-height: 82px; }
-  .rq-nav .brand img { width: 140px; }
+  .rq-nav { min-height: 68px; }
+  .rq-nav .brand img { width: 132px; }
   .rq-nav .button { display: none; }
   .rq-hero__copy, .rq-hero__statement { min-height: 500px; }
   .rq-hero h1 { font-size: clamp(72px, 25vw, 116px); }
