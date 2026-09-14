@@ -263,7 +263,7 @@ footer{padding:100px 4vw 34px;background:var(--ink);color:var(--paper);text-alig
     <p class="rq-payment-modal__copy">Он нужен, чтобы мы могли открыть вам доступ в закрытый телеграм-канал, где лежит курс.</p>
     <form data-payment-form novalidate>
       <label for="telegram-username">Telegram-ник</label>
-      <input id="telegram-username" name="telegram" type="text" inputmode="text" autocomplete="off" placeholder="@username" aria-describedby="telegram-error" required>
+      <input id="telegram-username" name="telegram" type="text" inputmode="text" autocomplete="off" placeholder="username или @username" aria-describedby="telegram-error" required>
       <p class="rq-payment-modal__error" id="telegram-error" data-payment-error aria-live="polite"></p>
       <button class="button rq-payment-modal__pay" type="submit">Оплатить</button>
       <p class="rq-payment-modal__note">Переход к оплате подключим позже.</p>
@@ -282,7 +282,8 @@ footer{padding:100px 4vw 34px;background:var(--ink);color:var(--paper);text-alig
   form.addEventListener('submit', (event) => {
     event.preventDefault();
     const value = input.value.trim();
-    if (!/^@[A-Za-z0-9_]{5,32}$/.test(value)) { input.setAttribute('aria-invalid', 'true'); error.textContent = 'Введите ник в формате @username'; input.focus(); return; }
+    if (!/^@?[A-Za-z0-9_]{5,32}$/.test(value)) { input.setAttribute('aria-invalid', 'true'); error.textContent = 'Введите Telegram-ник: username или @username'; input.focus(); return; }
+    input.value = value.startsWith('@') ? value : '@' + value;
     input.removeAttribute('aria-invalid');
     error.textContent = 'Ссылка на оплату пока не подключена.';
   });
