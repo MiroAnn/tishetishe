@@ -335,9 +335,17 @@ footer{padding:100px 4vw 34px;background:var(--ink);color:var(--paper);text-alig
   const form = modal.querySelector('[data-payment-form]');
   const input = form.querySelector('input[name="telegram"]');
   const error = modal.querySelector('[data-payment-error]');
+  const defaultPaymentUrl = 'https://payform.ru/awcyQkO/';
+  const tariffTwoButton = document.querySelector('.rq-tariff:nth-child(2) [data-rq-signup]');
+  if (tariffTwoButton) tariffTwoButton.dataset.paymentUrl = 'https://payform.ru/fkcyQnh/';
+  let selectedPaymentUrl = defaultPaymentUrl;
   const open = () => { modal.hidden = false; document.body.classList.add('rq-modal-open'); requestAnimationFrame(() => input.focus()); };
   const close = () => { modal.hidden = true; document.body.classList.remove('rq-modal-open'); error.textContent = ''; input.removeAttribute('aria-invalid'); };
-  document.querySelectorAll('[data-rq-signup]').forEach((button) => button.addEventListener('click', (event) => { event.preventDefault(); open(); }));
+  document.querySelectorAll('[data-rq-signup]').forEach((button) => button.addEventListener('click', (event) => {
+    event.preventDefault();
+    selectedPaymentUrl = button.dataset.paymentUrl || defaultPaymentUrl;
+    open();
+  }));
   modal.querySelectorAll('[data-payment-close]').forEach((button) => button.addEventListener('click', close));
   document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && !modal.hidden) close(); });
   form.addEventListener('submit', (event) => {
@@ -348,7 +356,7 @@ footer{padding:100px 4vw 34px;background:var(--ink);color:var(--paper);text-alig
     input.value = telegram;
     input.removeAttribute('aria-invalid');
     error.textContent = '';
-    const paymentUrl = new URL('https://payform.ru/awcyQkO/');
+    const paymentUrl = new URL(selectedPaymentUrl);
     paymentUrl.searchParams.set('customer_extra', `Telegram: ${telegram}`);
     window.location.assign(paymentUrl.toString());
   });
