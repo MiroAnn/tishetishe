@@ -295,6 +295,10 @@ footer{padding:100px 4vw 34px;background:var(--ink);color:var(--paper);text-alig
     </form>
   </section>
 </div><script>(() => {
+  const resultsNavLink = document.querySelector('nav a[href="#rq-results"]');
+  if (resultsNavLink) resultsNavLink.textContent = 'Что узнаете';
+  const resultsTitle = document.querySelector('#rq-results .rq-section-title h2');
+  if (resultsTitle) resultsTitle.innerHTML = 'Вы узнаете, как вести <span>интересные и содержательные диалоги</span>';
   const authorDetails = document.querySelectorAll('[data-author-details]');
   authorDetails.forEach((details) => {
     const subtitle = details.querySelector('.rq-author__description > p:first-child');
