@@ -320,6 +320,9 @@ footer{padding:100px 4vw 34px;background:var(--ink);color:var(--paper);text-alig
     </form>
   </section>
 </div><script>(() => {
+  const tariffTwoDuration = Array.from(document.querySelectorAll('.rq-tariff:nth-child(2) li')).find((item) => item.textContent.includes('Все записи'));
+  const tariffTwoMonths = tariffTwoDuration?.querySelector('strong');
+  if (tariffTwoMonths) tariffTwoMonths.textContent = '3 месяца';
   const heroCopy = document.querySelector('.rq-hero__copy');
   if (heroCopy) {
     const heroButton = document.createElement('a');
