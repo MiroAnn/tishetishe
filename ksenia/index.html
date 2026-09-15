@@ -330,6 +330,8 @@ footer{padding:100px 4vw 34px;background:var(--ink);color:var(--paper);text-alig
     heroCopy.append(heroButton);
   }
   const modal = document.querySelector('[data-payment-modal]');
+  const paymentNote = modal.querySelector('.rq-payment-modal__note');
+  if (paymentNote) paymentNote.remove();
   const form = modal.querySelector('[data-payment-form]');
   const input = form.querySelector('input[name="telegram"]');
   const error = modal.querySelector('[data-payment-error]');
