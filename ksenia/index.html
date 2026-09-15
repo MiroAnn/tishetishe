@@ -299,6 +299,10 @@ footer{padding:100px 4vw 34px;background:var(--ink);color:var(--paper);text-alig
   if (resultsNavLink) resultsNavLink.textContent = 'Что узнаете';
   const resultsTitle = document.querySelector('#rq-results .rq-section-title h2');
   if (resultsTitle) resultsTitle.innerHTML = 'Вы узнаете, как вести <span>интересные и содержательные диалоги</span>';
+  const authorsGrid = document.querySelector('.rq-authors__grid');
+  const annaCard = document.querySelector('.rq-author--anna');
+  const kseniaCard = document.querySelector('.rq-author--ksenia');
+  if (authorsGrid && annaCard && kseniaCard) authorsGrid.append(kseniaCard, annaCard);
   const authorDetails = document.querySelectorAll('[data-author-details]');
   authorDetails.forEach((details, index) => {
     const subtitle = details.querySelector('.rq-author__description > p:first-child');
