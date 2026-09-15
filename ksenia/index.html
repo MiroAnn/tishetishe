@@ -64,6 +64,8 @@ footer{padding:100px 4vw 34px;background:var(--ink);color:var(--paper);text-alig
 .rq-hero h1 { margin: 16px 0 40px; font-size: clamp(88px, 11vw, 190px); line-height: .78; letter-spacing: -.075em; }
 .rq-hero h1 span { color: #BACA7A; }
 .rq-hero__lead { max-width: 760px; font-size: clamp(24px, 2.2vw, 38px); line-height: 1.28; }
+.rq-hero__cta { align-self: flex-start; margin-top: 36px; background: #F0EBE2; border-color: #F0EBE2; color: #161719; }
+.rq-hero__cta:hover { background: #BACA7A; border-color: #BACA7A; }
 .rq-hero__statement { padding: clamp(60px, 8vw, 140px) clamp(30px, 5vw, 90px); display: flex; flex-direction: column; justify-content: center; gap: 44px; }
 .rq-hero__statement > p:first-child { font-size: clamp(22px, 2vw, 34px); line-height: 1.42; }
 .rq-hero__people { position: relative; min-height: 760px; background: #F0EBE2; }
@@ -318,6 +320,15 @@ footer{padding:100px 4vw 34px;background:var(--ink);color:var(--paper);text-alig
     </form>
   </section>
 </div><script>(() => {
+  const heroCopy = document.querySelector('.rq-hero__copy');
+  if (heroCopy) {
+    const heroButton = document.createElement('a');
+    heroButton.className = 'button rq-hero__cta';
+    heroButton.href = '#rq-price';
+    heroButton.dataset.rqSignup = 'true';
+    heroButton.textContent = 'Получить доступ';
+    heroCopy.append(heroButton);
+  }
   const modal = document.querySelector('[data-payment-modal]');
   const form = modal.querySelector('[data-payment-form]');
   const input = form.querySelector('input[name="telegram"]');
