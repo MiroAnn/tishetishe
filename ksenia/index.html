@@ -330,21 +330,64 @@ footer{padding:100px 4vw 34px;background:var(--ink);color:var(--paper);text-alig
   const consent = form.querySelector('input[name="personal-data-consent"]');
   const error = modal.querySelector('[data-payment-error]');
   const consentError = modal.querySelector('[data-consent-error]');
+  const defaultPaymentUrl = 'https://payform.ru/awcyQkO/';
+  const tariffTwoButton = document.querySelector('.rq-tariff:nth-child(2) [data-rq-signup]');
+  if (tariffTwoButton) tariffTwoButton.dataset.paymentUrl = 'https://payform.ru/fkcyQnh/';
+  let selectedPaymentUrl = defaultPaymentUrl;
+  let selectedTariff = '1';
   const open = () => { modal.hidden = false; document.body.classList.add('rq-modal-open'); requestAnimationFrame(() => input.focus()); };
   const close = () => { modal.hidden = true; document.body.classList.remove('rq-modal-open'); error.textContent = ''; consentError.textContent = ''; input.removeAttribute('aria-invalid'); consent.removeAttribute('aria-invalid'); };
-  document.querySelectorAll('[data-rq-signup]').forEach((button) => button.addEventListener('click', (event) => { event.preventDefault(); open(); }));
+  document.querySelectorAll('[data-rq-signup]').forEach((button) => button.addEventListener('click', (event) => {
+    event.preventDefault();
+    selectedPaymentUrl = button.dataset.paymentUrl || defaultPaymentUrl;
+    selectedTariff = button === tariffTwoButton ? '2' : '1';
+    open();
+  }));
   modal.querySelectorAll('[data-payment-close]').forEach((button) => button.addEventListener('click', close));
   document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && !modal.hidden) close(); });
-  form.addEventListener('submit', (event) => {
+  form.addEventListener('submit', async (event) => {
     event.preventDefault();
     const value = input.value.trim();
     if (!/^@?[A-Za-z0-9_]{5,32}$/.test(value)) { input.setAttribute('aria-invalid', 'true'); error.textContent = 'Введите Telegram-ник: username или @username'; input.focus(); return; }
     if (!consent.checked) { consent.setAttribute('aria-invalid', 'true'); consentError.textContent = 'Поставьте галочку, чтобы подтвердить согласие.'; consent.focus(); return; }
-    input.value = value.startsWith('@') ? value : '@' + value;
+    const telegram = value.startsWith('@') ? value : '@' + value;
+    input.value = telegram;
     input.removeAttribute('aria-invalid');
     consent.removeAttribute('aria-invalid');
     consentError.textContent = '';
-    error.textContent = 'Ссылка на оплату пока не подключена.';
+    error.textContent = '';
+    const submitButton = form.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+    const query = new URLSearchParams(window.location.search);
+    try {
+      const response = await fetch('https://ksenia-payments.proludey.workers.dev/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          telegram,
+          tariff: selectedTariff,
+          sourceUrl: window.location.href,
+          referrer: document.referrer,
+          utm: {
+            source: query.get('utm_source'),
+            medium: query.get('utm_medium'),
+            campaign: query.get('utm_campaign'),
+            content: query.get('utm_content'),
+            term: query.get('utm_term'),
+          },
+        }),
+      });
+      if (!response.ok) throw new Error('Lead request failed');
+      const lead = await response.json();
+      const paymentUrl = new URL(lead.paymentUrl || selectedPaymentUrl);
+      paymentUrl.searchParams.set('order_id', lead.leadId);
+      paymentUrl.searchParams.set('customer_extra', `Telegram: ${telegram}`);
+      window.location.assign(paymentUrl.toString());
+    } catch (requestError) {
+      console.error(requestError);
+      submitButton.disabled = false;
+      error.textContent = 'Не удалось перейти к оплате. Попробуйте ещё раз.';
+    }
   });
   consent.addEventListener('change', () => { if (consent.checked) { consent.removeAttribute('aria-invalid'); consentError.textContent = ''; } });
   const items = document.querySelectorAll('[data-rq-reveal]');

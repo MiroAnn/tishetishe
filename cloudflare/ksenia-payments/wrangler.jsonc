@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ksenia-payments",
+  "main": "src/index.js",
+  "compatibility_date": "2026-09-15",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "ksenia-payments",
+      "database_id": "12fdfdf0-8378-4c0d-82dd-bfbc33462b5c"
+    }
+  ]
+}
