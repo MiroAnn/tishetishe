@@ -331,9 +331,13 @@ footer{padding:100px 4vw 34px;background:var(--ink);color:var(--paper);text-alig
     event.preventDefault();
     const value = input.value.trim();
     if (!/^@?[A-Za-z0-9_]{5,32}$/.test(value)) { input.setAttribute('aria-invalid', 'true'); error.textContent = 'Введите Telegram-ник: username или @username'; input.focus(); return; }
-    input.value = value.startsWith('@') ? value : '@' + value;
+    const telegram = value.startsWith('@') ? value : '@' + value;
+    input.value = telegram;
     input.removeAttribute('aria-invalid');
-    error.textContent = 'Ссылка на оплату пока не подключена.';
+    error.textContent = '';
+    const paymentUrl = new URL('https://payform.ru/awcyQkO/');
+    paymentUrl.searchParams.set('customer_extra', `Telegram: ${telegram}`);
+    window.location.assign(paymentUrl.toString());
   });
   const items = document.querySelectorAll('[data-rq-reveal]');
   if (!('IntersectionObserver' in window)) { items.forEach((item) => item.classList.add('is-visible')); return; }
