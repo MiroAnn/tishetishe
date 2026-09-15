@@ -300,19 +300,14 @@ footer{padding:100px 4vw 34px;background:var(--ink);color:var(--paper);text-alig
   const resultsTitle = document.querySelector('#rq-results .rq-section-title h2');
   if (resultsTitle) resultsTitle.innerHTML = 'Вы узнаете, как вести <span>интересные и содержательные диалоги</span>';
   const authorDetails = document.querySelectorAll('[data-author-details]');
-  authorDetails.forEach((details) => {
+  authorDetails.forEach((details, index) => {
     const subtitle = details.querySelector('.rq-author__description > p:first-child');
-    if (!subtitle) return;
-    subtitle.classList.add('rq-author__subtitle');
-    details.before(subtitle);
+    if (subtitle) {
+      subtitle.classList.add('rq-author__subtitle');
+      details.before(subtitle);
+    }
+    if (index > 0) details.remove();
   });
-  let syncingAuthorDetails = false;
-  authorDetails.forEach((details) => details.addEventListener('toggle', () => {
-    if (syncingAuthorDetails) return;
-    syncingAuthorDetails = true;
-    authorDetails.forEach((item) => { item.open = details.open; });
-    syncingAuthorDetails = false;
-  }));
   const modal = document.querySelector('[data-payment-modal]');
   const form = modal.querySelector('[data-payment-form]');
   const input = form.querySelector('input[name="telegram"]');
