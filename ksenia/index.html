@@ -408,6 +408,10 @@ footer{padding:100px 4vw 34px;background:var(--ink);color:var(--paper);text-alig
     }
   });
   consent.addEventListener('change', () => { if (consent.checked) { consent.removeAttribute('aria-invalid'); consentError.textContent = ''; } });
+  document.addEventListener('click', (event) => {
+    const button = event.target.closest('button, a.button, a.rq-tariff__button');
+    if (button && typeof window.ym === 'function') window.ym(112712578, 'reachGoal', 'Buttonclick');
+  });
   const items = document.querySelectorAll('[data-rq-reveal]');
   if (!('IntersectionObserver' in window)) { items.forEach((item) => item.classList.add('is-visible')); return; }
   const observer = new IntersectionObserver((entries) => entries.forEach((entry) => { if (entry.isIntersecting) entry.target.classList.add('is-visible'); }), {threshold:.08});
